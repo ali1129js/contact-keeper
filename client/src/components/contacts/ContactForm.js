@@ -2,11 +2,14 @@
  * @Author: Ali
  * @Date:   2019-10-28T09:23:53+01:00
  * @Last modified by:   Ali
- * @Last modified time: 2019-10-28T09:42:20+01:00
+ * @Last modified time: 2019-10-28T11:02:26+01:00
  */
-import React,{useState} from 'react'
+import React,{useState,useContext} from 'react'
+import ContactContext from '../../context/contact/contactContext'
 
 const ContactForm = () => {
+  const contactContext = useContext(ContactContext)
+
   const [contact,setContact] = useState({
     name:'',
     email:'',
@@ -17,8 +20,19 @@ const ContactForm = () => {
 
   const onChange = e => setContact({...contact,[e.target.name]:e.target.value})
 
+  const onSubmit = e => {
+    e.preventDefault()
+    contactContext.addContact(contact)
+    setContact({
+      name:'',
+      email:'',
+      phone:'',
+      type:'personal'
+    })
+  }
+
   return (
-    <form action="">
+    <form onSubmit={onSubmit}>
       <h2 className="text-primary"> Add Contact </h2>
       <input type="text" placeholder="Name" name='name' value={name} onChange={onChange} />
       <input type="email" placeholder="Email" name='email' value={email} onChange={onChange} />
@@ -28,11 +42,13 @@ const ContactForm = () => {
         type="radio"
         name="type"
         value='personal'
+        onChange={onChange}
         checked={type === 'personal'} /> Personal{' '}
       <input
         type="radio"
         name="type"
         value='proffessional'
+        onChange={onChange}
         checked={type === 'proffessional'} /> Proffessional
       <div className="">
         <input type="submit" value="Add Contact" className="btn btn-primary btn-block"/>
