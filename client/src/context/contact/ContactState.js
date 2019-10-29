@@ -2,7 +2,7 @@
  * @Author: Ali
  * @Date:   2019-10-27T09:59:48+01:00
  * @Last modified by:   Ali
- * @Last modified time: 2019-10-29T10:17:15+01:00
+ * @Last modified time: 2019-10-29T10:50:09+01:00
  */
 import React, { useReducer} from 'react'
 import uuid from 'uuid'
@@ -30,7 +30,8 @@ const ContactState = props => {
       phone:'333-333-3333',
       type:'proffessional'}
     ],
-    current:null
+    current:null,
+    filtered:null
   }
   const [state,dispatch] = useReducer(contactReducer,initialState)
   // Add Contact
@@ -51,19 +52,26 @@ const ContactState = props => {
   const updateContact = contact => {
     dispatch({type:UPDATE_CONTACT,payload: contact})}
   //Filter Contacts
-
+  const filterContacts = text => {
+    dispatch({type: FILTER_CONTACTS,payload:text})
+  }
   //Clear Filter
-
+  const clearFilter = () => {
+    dispatch({type:CLEAR_FILTER})
+  }
   return (
     <ContactContext.Provider
       value={{
         contacts:state.contacts,
         current:state.current,
+        filtered:state.filtered,
         addContact,
         deleteContact,
         setCurrent,
         clearCurrent,
-        updateContact
+        updateContact,
+        filterContacts,
+        clearFilter
       }}
     >
       {props.children}
