@@ -2,7 +2,7 @@
  * @Author: Ali
  * @Date:   2019-10-27T10:47:48+01:00
  * @Last modified by:   Ali
- * @Last modified time: 2019-10-28T11:42:12+01:00
+ * @Last modified time: 2019-10-29T09:43:05+01:00
  */
 import React,{useContext} from 'react'
 import PropTypes from 'prop-types'
@@ -10,11 +10,12 @@ import ContactContext from '../../context/contact/contactContext'
 
 const ContactItem = ({contact}) => {
   const contactContext = useContext(ContactContext)
-  const {deleteContact} = contactContext
+  const {deleteContact, setCurrent,clearCurrent} = contactContext
   const {id,name,email,phone,type} = contact
 
   const onDelete = () => {
     deleteContact(id)
+    clearCurrent()
   }
   return (
     <div className="card bg-light">
@@ -30,7 +31,7 @@ const ContactItem = ({contact}) => {
         {phone && (<li> <i className="fas fa-phone" /> {phone}</li>)}
       </ul>
       <p>
-        <button className="btn btn-dark btn-sm"> Edit </button>
+        <button className="btn btn-dark btn-sm" onClick={()=>setCurrent(contact)}> Edit </button>
         <button className="btn btn-danger btn-sm" onClick={onDelete}> Delete </button>
       </p>
     </div>

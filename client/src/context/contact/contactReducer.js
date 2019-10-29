@@ -2,7 +2,7 @@
  * @Author: Ali
  * @Date:   2019-10-27T10:23:31+01:00
  * @Last modified by:   Ali
- * @Last modified time: 2019-10-28T11:36:37+01:00
+ * @Last modified time: 2019-10-29T09:37:37+01:00
  */
 import {ADD_CONTACT,DELETE_CONTACT,SET_CURRENT,CLEAR_CURRENT,UPDATE_CURRENT,FILTER_CONTACTS,CLEAR_FILTER} from '../types'
 
@@ -17,6 +17,16 @@ export default (state,action) => {
     return {
       ...state,
       contacts:state.contacts.filter(contact => contact.id !== action.payload)
+    }
+    case SET_CURRENT:
+    return {
+      ...state,
+      current:action.payload
+    }
+    case CLEAR_CURRENT :
+    return {
+      ...state,
+      current:null
     }
     default:
     return state
