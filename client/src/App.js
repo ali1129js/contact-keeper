@@ -2,7 +2,7 @@
  * @Author: Ali
  * @Date:   2019-10-25T11:08:21+02:00
  * @Last modified by:   Ali
- * @Last modified time: 2019-10-30T04:59:35+01:00
+ * @Last modified time: 2019-10-30T05:28:25+01:00
  */
 
 import React from 'react';
@@ -14,17 +14,19 @@ import ContactState from './context/contact/ContactState'
 import AuthState from './context/auth/AuthState'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
-
+import AlertState from './context/alert/AlertState'
+import Alert from './components/layout/Alert'
 import './App.css';
 
 const App = () => {
   return (
     <AuthState>
     <ContactState>
+    <AlertState>
     <Router>
-      <>
         <Navbar />
         <div className="container">
+        <Alert />
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/about' component={About} />
@@ -32,8 +34,8 @@ const App = () => {
             <Route exact path='/login' component={Login} />
           </Switch>
         </div>
-      </>
     </Router>
+    </AlertState>
   </ContactState>
   </AuthState>
   )
