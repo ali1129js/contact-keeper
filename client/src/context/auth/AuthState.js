@@ -2,13 +2,14 @@
  * @Author: Ali
  * @Date:   2019-10-29T11:12:46+01:00
  * @Last modified by:   Ali
- * @Last modified time: 2019-10-30T15:31:12+01:00
+ * @Last modified time: 2019-10-31T10:37:42+01:00
  */
 
  import React, { useReducer} from 'react'
  import axios from 'axios'
  import AuthContext from './authContext'
  import authReducer from './authReducer'
+ import setAuthToken from '../../utils/setAuthToken'
  import {
    REGISTER_SUCCESS,
    REGISTER_FAIL,
@@ -30,7 +31,21 @@
    }
    const [state,dispatch] = useReducer(authReducer,initialState)
    //Load User
-   const loadUser = () => console.log('l');
+   const loadUser = async () => {
+     if(localStorage.token){
+       setAuthToken(localStorage.token)
+     }
+     try {
+      const res = await axios.get('/api/auth')
+
+      dispatch({type:USER_LOADED,payload:res.data})
+     } catch (e) {
+       dispatch({
+         type: AUTH_ERROR
+       })
+     }
+
+   }
    //Register User
    const register = async formData => {
      //for axios
@@ -45,6 +60,7 @@
          type:REGISTER_SUCCESS,
          payload: res.data
        })
+       loadUser()
      } catch (e) {
        dispatch({
          type:REGISTER_FAIL,

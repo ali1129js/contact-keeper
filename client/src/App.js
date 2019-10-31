@@ -2,7 +2,7 @@
  * @Author: Ali
  * @Date:   2019-10-25T11:08:21+02:00
  * @Last modified by:   Ali
- * @Last modified time: 2019-10-30T05:28:25+01:00
+ * @Last modified time: 2019-10-31T10:35:44+01:00
  */
 
 import React from 'react';
@@ -16,7 +16,12 @@ import Register from './components/auth/Register'
 import Login from './components/auth/Login'
 import AlertState from './context/alert/AlertState'
 import Alert from './components/layout/Alert'
+import setAuthToken from './utils/setAuthToken'
 import './App.css';
+
+if(localStorage.token){
+  setAuthToken(localStorage.token)
+}
 
 const App = () => {
   return (
