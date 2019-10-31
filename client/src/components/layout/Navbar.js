@@ -2,7 +2,7 @@
  * @Author: Ali
  * @Date:   2019-10-25T11:01:07+02:00
  * @Last modified by:   Ali
- * @Last modified time: 2019-10-31T11:14:27+01:00
+ * @Last modified time: 2019-10-31T11:18:32+01:00
  */
 import React,{useContext} from 'react'
 import PropTypes from 'prop-types'
@@ -13,12 +13,14 @@ import AuthContext from '../../context/auth/authContext'
 const Navbar = ({title,icon}) => {
   const authContext = useContext(AuthContext)
   const {isAuthenticated, logout, user} = authContext
-
+  const onLogout = () => {
+    logout()
+  }
   const authLinks = (
     <>
      <li> Hello {user && user.name}</li>
      <li>
-        <a href="#!">
+        <a onClick={onLogout} href="#!">
           <i className="fas fa-sign-out-alt"></i>
           <span className="hide-sm">Logout</span>
         </a>

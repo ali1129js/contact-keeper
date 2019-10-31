@@ -2,7 +2,7 @@
  * @Author: Ali
  * @Date:   2019-10-29T11:12:46+01:00
  * @Last modified by:   Ali
- * @Last modified time: 2019-10-31T10:50:46+01:00
+ * @Last modified time: 2019-10-31T11:17:22+01:00
  */
 
  import React, { useReducer} from 'react'
@@ -92,7 +92,7 @@
    }
 
    //Logout
-   const logout = () => console.log('l');
+   const logout = () => dispatch({type:LOGOUT})
 
    //Clear CLEAR_ERRORS
    const clearErrors = () => dispatch({type:CLEAR_ERRORS})
