@@ -2,7 +2,7 @@
  * @Author: Ali
  * @Date:   2019-10-29T11:13:12+01:00
  * @Last modified by:   Ali
- * @Last modified time: 2019-10-31T10:29:04+01:00
+ * @Last modified time: 2019-10-31T10:51:53+01:00
  */
 import {CLEAR_ERRORS,LOGOUT,LOGIN_FAIL,LOGIN_SUCCESS,AUTH_ERROR,USER_LOADED,REGISTER_FAIL,REGISTER_SUCCESS} from '../types'
 
@@ -17,6 +17,7 @@ export default (state,action) => {
     }
 
     case REGISTER_SUCCESS:
+    case LOGIN_SUCCESS :
     localStorage.setItem('token',action.payload.token)
       return {
         ...state,
@@ -26,6 +27,7 @@ export default (state,action) => {
       }
     case REGISTER_FAIL:
     case AUTH_ERROR :
+    case LOGIN_FAIL :
     localStorage.removeItem('token')
       return {
         ...state,

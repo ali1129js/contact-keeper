@@ -2,7 +2,7 @@
  * @Author: Ali
  * @Date:   2019-10-29T11:12:46+01:00
  * @Last modified by:   Ali
- * @Last modified time: 2019-10-31T10:37:42+01:00
+ * @Last modified time: 2019-10-31T10:50:46+01:00
  */
 
  import React, { useReducer} from 'react'
@@ -69,7 +69,27 @@
      }
    }
    //Login User
-   const login = () => console.log('l');
+   const login = async formData => {
+     //for axios
+     const config ={
+       headers: {
+         'Content-Type':'application/json'
+       }
+     }
+     try {
+       const res = await axios.post('/api/auth',formData,config)
+       dispatch({
+         type:LOGIN_SUCCESS,
+         payload: res.data
+       })
+       loadUser()
+     } catch (e) {
+       dispatch({
+         type:LOGIN_FAIL,
+         payload: e.response.data.msg
+       })
+     }
+   }
 
    //Logout
    const logout = () => console.log('l');
