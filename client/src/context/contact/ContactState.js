@@ -2,69 +2,90 @@
  * @Author: Ali
  * @Date:   2019-10-27T09:59:48+01:00
  * @Last modified by:   Ali
- * @Last modified time: 2019-10-29T10:50:09+01:00
+ * @Last modified time: 2019-11-11T16:53:21+01:00
  */
-import React, { useReducer} from 'react'
-import uuid from 'uuid'
-import ContactContext from './contactContext'
-import contactReducer from './contactReducer'
-import {ADD_CONTACT,DELETE_CONTACT,SET_CURRENT,CLEAR_CURRENT,UPDATE_CURRENT,FILTER_CONTACTS,CLEAR_FILTER,UPDATE_CONTACT} from '../types'
+import React, { useReducer } from "react";
+import uuid from "uuid";
+import ContactContext from "./contactContext";
+import contactReducer from "./contactReducer";
+import {
+  ADD_CONTACT,
+  DELETE_CONTACT,
+  SET_CURRENT,
+  CLEAR_CURRENT,
+  UPDATE_CURRENT,
+  FILTER_CONTACTS,
+  CLEAR_FILTER,
+  UPDATE_CONTACT
+} from "../types";
 
 const ContactState = props => {
   const initialState = {
     contacts: [
       {
-        id:1,
-        name:'Jill Hojnwson',
-        email:'jill@gmaol.com',
-        phone:'111-111-1111',
-        type:'personal'
-      },{id:2,
-      name:'Sara Watson',
-      email:'sarah@gmail.com',
-      phone:'222-222-2222',
-      type:'personal'},
-      {id:3,
-      name:'Harry White',
-      email:'harry@gmail.com',
-      phone:'333-333-3333',
-      type:'proffessional'}
+        id: 1,
+        name: "Jill Hojnwson",
+        email: "jill@gmaol.com",
+        phone: "111-111-1111",
+        type: "personal"
+      },
+      {
+        id: 2,
+        name: "Sara Watson",
+        email: "sarah@gmail.com",
+        phone: "222-222-2222",
+        type: "personal"
+      },
+      {
+        id: 3,
+        name: "Harry White",
+        email: "harry@gmail.com",
+        phone: "333-333-3333",
+        type: "proffessional"
+      }
     ],
-    current:null,
-    filtered:null
-  }
-  const [state,dispatch] = useReducer(contactReducer,initialState)
+    current: null,
+    filtered: null
+  };
+  const [state, dispatch] = useReducer(contactReducer, initialState);
+
+  //Get Contact
+
   // Add Contact
   const addContact = contact => {
-    contact.id = uuid.v4()
-    dispatch({type:ADD_CONTACT,payload: contact})
-  }
+    contact.id = uuid.v4();
+    dispatch({ type: ADD_CONTACT, payload: contact });
+  };
   // Delete Contact
   const deleteContact = id => {
-    dispatch({type:DELETE_CONTACT,payload: id})}
+    dispatch({ type: DELETE_CONTACT, payload: id });
+  };
   // Set Current Contact
   const setCurrent = contact => {
-    dispatch({type:SET_CURRENT,payload: contact})}
+    dispatch({ type: SET_CURRENT, payload: contact });
+  };
   // Clear current Contact
   const clearCurrent = () => {
-    dispatch({type:CLEAR_CURRENT})}
+    dispatch({ type: CLEAR_CURRENT });
+  };
   // Update Contact
   const updateContact = contact => {
-    dispatch({type:UPDATE_CONTACT,payload: contact})}
+    dispatch({ type: UPDATE_CONTACT, payload: contact });
+  };
   //Filter Contacts
   const filterContacts = text => {
-    dispatch({type: FILTER_CONTACTS,payload:text})
-  }
+    dispatch({ type: FILTER_CONTACTS, payload: text });
+  };
   //Clear Filter
   const clearFilter = () => {
-    dispatch({type:CLEAR_FILTER})
-  }
+    dispatch({ type: CLEAR_FILTER });
+  };
   return (
     <ContactContext.Provider
       value={{
-        contacts:state.contacts,
-        current:state.current,
-        filtered:state.filtered,
+        contacts: state.contacts,
+        current: state.current,
+        filtered: state.filtered,
         addContact,
         deleteContact,
         setCurrent,
@@ -76,6 +97,6 @@ const ContactState = props => {
     >
       {props.children}
     </ContactContext.Provider>
-  )
-}
-export default ContactState
+  );
+};
+export default ContactState;
