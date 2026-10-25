@@ -1,3 +1,4 @@
+import "./loadDotenv.js";
 import { createApp } from "./app.js";
 import { connectDB } from "./db.js";
 import { loadEnv } from "./env.js";

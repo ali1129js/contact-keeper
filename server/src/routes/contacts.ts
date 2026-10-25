@@ -25,7 +25,7 @@ export function contactsRouter(jwtSecret: string): Router {
       res.status(404).json({ msg: "Contact not found" });
       return;
     }
-    const contact = await Contact.findOneAndUpdate({ _id: id, user: req.userId }, { $set: req.body }, { new: true });
+    const contact = await Contact.findOneAndUpdate({ _id: id, user: req.userId }, { $set: req.body }, { returnDocument: "after" });
     if (!contact) {
       res.status(404).json({ msg: "Contact not found" });
       return;

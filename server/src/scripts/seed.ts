@@ -1,3 +1,4 @@
+import "../loadDotenv.js";
 import bcrypt from "bcryptjs";
 import { connectDB, disconnectDB } from "../db.js";
 import { Contact } from "../models/Contact.js";
