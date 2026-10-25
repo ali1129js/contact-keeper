@@ -13,7 +13,7 @@ async function init(): Promise<Express> {
     mongoose.set("strictQuery", true);
     await mongoose.connect(env.MONGODB_URI, { serverSelectionTimeoutMS: 10_000 });
   }
-  return createApp({ jwtSecret: env.JWT_SECRET, jwtExpiresIn: env.JWT_EXPIRES_IN, clientOrigin: env.CLIENT_ORIGIN });
+  return createApp({ jwtSecret: env.JWT_SECRET, jwtExpiresIn: env.JWT_EXPIRES_IN, clientOrigin: env.CLIENT_ORIGIN, cronSecret: env.CRON_SECRET });
 }
 
 export function getApp(): Promise<Express> {

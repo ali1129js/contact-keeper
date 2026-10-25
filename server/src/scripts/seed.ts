@@ -18,11 +18,17 @@ export const DEMO_CONTACTS = [
   { name: "Felix Underhill", email: "felix@example.com", phone: "555-0106", type: "personal" },
 ] as const;
 
-export async function seed(): Promise<void> {
-  await User.deleteOne({ email: DEMO_USER.email });
-  const user = await User.create({ ...DEMO_USER, password: await bcrypt.hash(DEMO_USER.password, 12) });
+// Resets only the demo@example.com account: password, name and contacts.
+export async function seed(bcryptRounds = 12): Promise<number> {
+  const password = await bcrypt.hash(DEMO_USER.password, bcryptRounds);
+  const user = await User.findOneAndUpdate(
+    { email: DEMO_USER.email },
+    { $set: { name: DEMO_USER.name, password } },
+    { upsert: true, returnDocument: "after" },
+  );
   await Contact.deleteMany({ user: user._id });
   await Contact.insertMany(DEMO_CONTACTS.map((c) => ({ ...c, user: user._id })));
+  return DEMO_CONTACTS.length;
 }
 
 const isMain = process.argv[1]?.endsWith("seed.ts") || process.argv[1]?.endsWith("seed.js");

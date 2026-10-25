@@ -3,12 +3,14 @@ import cors from "cors";
 import helmet from "helmet";
 import { authRouter } from "./routes/auth.js";
 import { contactsRouter } from "./routes/contacts.js";
+import { cronRouter } from "./routes/cron.js";
 
 export interface AppConfig {
   jwtSecret: string;
   jwtExpiresIn?: string;
   clientOrigin?: string;
   bcryptRounds?: number;
+  cronSecret?: string;
 }
 
 export function createApp(cfg: AppConfig): express.Express {
@@ -30,6 +32,7 @@ export function createApp(cfg: AppConfig): express.Express {
     }),
   );
   app.use("/api/contacts", contactsRouter(cfg.jwtSecret));
+  app.use("/api/cron", cronRouter({ secret: cfg.cronSecret, bcryptRounds: cfg.bcryptRounds ?? 12 }));
 
   app.use("/api", (_req, res) => {
     res.status(404).json({ msg: "Not found" });

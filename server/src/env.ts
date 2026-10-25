@@ -6,6 +6,7 @@ const envSchema = z.object({
   JWT_EXPIRES_IN: z.string().default("7d"),
   PORT: z.coerce.number().int().positive().default(5000),
   CLIENT_ORIGIN: z.string().optional(),
+  CRON_SECRET: z.string().min(16).optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;

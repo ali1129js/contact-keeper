@@ -89,6 +89,8 @@ The repo is ready for a single Vercel project (no separate API host):
 
 - `vercel.json` builds the client (`client/dist`) as static output and rewrites `/api/*` to one Vercel Function.
 - `api/index.ts` re-exports `server/src/serverless.ts`, which validates env, connects to MongoDB once per cold start and reuses the connection while the instance is warm.
+- Functions run in `fra1` (Frankfurt), next to the database.
+- A daily Vercel Cron Job resets the demo account to the fictional seed data.
 - All other paths fall back to `index.html` for client side routing.
 
 Set these environment variables in the Vercel project:
@@ -99,6 +101,7 @@ Set these environment variables in the Vercel project:
 | `JWT_SECRET` | yes | 32+ random characters |
 | `JWT_EXPIRES_IN` | no | defaults to `7d` |
 | `CLIENT_ORIGIN` | no | only needed if the client is served from a different origin |
+| `CRON_SECRET` | no | enables the nightly demo reset (`/api/cron/reset-demo`, 02:00 UTC); only touches `demo@example.com` |
 
 You can check the build locally with `npx vercel build` (no deploy).
 
