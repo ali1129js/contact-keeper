@@ -83,6 +83,25 @@ npm test
 
 API tests run against a throwaway in-memory MongoDB, so no setup is required.
 
+## Deploying to Vercel
+
+The repo is ready for a single Vercel project (no separate API host):
+
+- `vercel.json` builds the client (`client/dist`) as static output and rewrites `/api/*` to one Vercel Function.
+- `api/index.ts` re-exports `server/src/serverless.ts`, which validates env, connects to MongoDB once per cold start and reuses the connection while the instance is warm.
+- All other paths fall back to `index.html` for client side routing.
+
+Set these environment variables in the Vercel project:
+
+| Variable | Required | Notes |
+| --- | --- | --- |
+| `MONGODB_URI` | yes | e.g. a MongoDB Atlas free cluster connection string |
+| `JWT_SECRET` | yes | 32+ random characters |
+| `JWT_EXPIRES_IN` | no | defaults to `7d` |
+| `CLIENT_ORIGIN` | no | only needed if the client is served from a different origin |
+
+You can check the build locally with `npx vercel build` (no deploy).
+
 ## Built with AI-assisted development
 
 The 2026 refresh (TypeScript port, validation, tests and docs) was built with AI-assisted development and reviewed by me.
