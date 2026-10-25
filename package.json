@@ -2,6 +2,7 @@
   "name": "contact-keeper",
   "version": "2.0.0",
   "private": true,
+  "type": "module",
   "description": "Contact manager built with React, Express, MongoDB and strict TypeScript",
   "license": "ISC",
   "author": "Ali",
