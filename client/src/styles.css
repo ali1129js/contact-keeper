@@ -43,3 +43,26 @@ label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.9rem; c
 .badge-personal { background: #451a03; color: #fcd34d; }
 .meta { list-style: none; padding: 0; margin: 0.7rem 0; color: var(--muted); font-size: 0.9rem; display: grid; gap: 0.25rem; }
 .actions { display: flex; gap: 0.5rem; }
+
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgb(2 8 23 / 0.72);
+}
+.dialog {
+  width: min(26rem, 100%);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.25rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.dialog-title { margin: 0; font-size: 1.1rem; }
+.dialog-body { margin: 0; color: var(--muted); }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 0.5rem; }

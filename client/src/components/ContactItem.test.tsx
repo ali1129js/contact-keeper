@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { ContactItem } from "./ContactItem";
@@ -13,13 +13,47 @@ describe("ContactItem", () => {
     expect(screen.getByText("professional")).toHaveClass("badge-professional");
   });
 
-  it("calls edit and delete handlers", async () => {
+  it("calls the edit handler from the card", async () => {
     const onEdit = vi.fn();
-    const onDelete = vi.fn();
-    render(<ContactItem contact={contact} onEdit={onEdit} onDelete={onDelete} />);
+    render(<ContactItem contact={contact} onEdit={onEdit} onDelete={vi.fn()} />);
     await userEvent.click(screen.getByRole("button", { name: "Edit" }));
-    await userEvent.click(screen.getByRole("button", { name: "Delete" }));
     expect(onEdit).toHaveBeenCalledWith(contact);
+  });
+
+  it("asks for confirmation before deleting, with Cancel focused first", async () => {
+    const onDelete = vi.fn();
+    const user = userEvent.setup();
+    render(<ContactItem contact={contact} onEdit={vi.fn()} onDelete={onDelete} />);
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    const dialog = screen.getByRole("dialog", { name: "Delete contact?" });
+    expect(screen.getByRole("button", { name: "Cancel" })).toHaveFocus();
+    expect(onDelete).not.toHaveBeenCalled();
+
+    await user.click(within(dialog).getByRole("button", { name: "Delete contact" }));
     expect(onDelete).toHaveBeenCalledWith("1");
+    expect(onDelete).toHaveBeenCalledTimes(1);
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("does not delete when Cancel, Escape, or the backdrop is used", async () => {
+    const onDelete = vi.fn();
+    const user = userEvent.setup();
+    const { rerender } = render(<ContactItem contact={contact} onEdit={vi.fn()} onDelete={onDelete} />);
+
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    await user.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(onDelete).not.toHaveBeenCalled();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    await user.keyboard("{Escape}");
+    expect(onDelete).not.toHaveBeenCalled();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+
+    rerender(<ContactItem contact={contact} onEdit={vi.fn()} onDelete={onDelete} />);
+    await user.click(screen.getByRole("button", { name: "Delete" }));
+    await user.click(screen.getByTestId("dialog-backdrop"));
+    expect(onDelete).not.toHaveBeenCalled();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 });
