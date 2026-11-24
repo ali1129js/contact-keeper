@@ -56,4 +56,42 @@ describe("ContactItem", () => {
     expect(onDelete).not.toHaveBeenCalled();
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
+
+  it("turns valid email and phone into mailto and tel links, with a named copy button", async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    const user = userEvent.setup();
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: { writeText },
+    });
+    render(<ContactItem contact={contact} onEdit={vi.fn()} onDelete={vi.fn()} />);
+
+    expect(screen.getByRole("link", { name: "ada@example.com" })).toHaveAttribute("href", "mailto:ada@example.com");
+    expect(screen.getByRole("link", { name: "555-0101" })).toHaveAttribute("href", "tel:5550101");
+
+    const copyEmail = screen.getByRole("button", { name: "Copy email ada@example.com" });
+    await user.click(copyEmail);
+    expect(writeText).toHaveBeenCalledWith("ada@example.com");
+    expect(copyEmail).toHaveTextContent("Copied");
+  });
+
+  it("does not link invalid or empty email and phone values", () => {
+    render(
+      <ContactItem
+        contact={{ ...contact, email: "not-an-email", phone: "call me" }}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />,
+    );
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
+    expect(screen.getByText(/not-an-email/)).toBeInTheDocument();
+    expect(screen.getByText(/call me/)).toBeInTheDocument();
+
+    const { rerender } = render(
+      <ContactItem contact={{ ...contact, email: "", phone: "" }} onEdit={vi.fn()} onDelete={vi.fn()} />,
+    );
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
+    rerender(<ContactItem contact={{ ...contact, email: undefined, phone: undefined }} onEdit={vi.fn()} onDelete={vi.fn()} />);
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
+  });
 });

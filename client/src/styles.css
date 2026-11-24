@@ -42,6 +42,9 @@ label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.9rem; c
 .badge-professional { background: #064e3b; color: #6ee7b7; }
 .badge-personal { background: #451a03; color: #fcd34d; }
 .meta { list-style: none; padding: 0; margin: 0.7rem 0; color: var(--muted); font-size: 0.9rem; display: grid; gap: 0.25rem; }
+.meta a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
+.meta-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.4rem; }
+.btn-copy { padding: 0.2rem 0.55rem; font-size: 0.8rem; }
 .actions { display: flex; gap: 0.5rem; }
 
 .dialog-backdrop {
