@@ -4,6 +4,10 @@ A full stack contact manager: sign up, log in and keep a private list of persona
 
 Originally built in 2019 as a MERN learning project, refreshed in 2026 as a strict TypeScript app with validation, tests and env-only configuration.
 
+Live app: https://contacts.ali1129.dev
+
+See [docs/LEARN.md](docs/LEARN.md) for how JWT auth, Zod validation and `npm run demo` work.
+
 ![Contact Keeper screenshot](docs/screenshot.png)
 
 ## Stack
@@ -21,7 +25,7 @@ Originally built in 2019 as a MERN learning project, refreshed in 2026 as a stri
 ```
 client/   Vite + React app (src/components, src/pages, src/context, src/lib)
 server/   Express API (src/routes, src/models, src/middleware, src/scripts)
-docs/     Screenshots
+docs/     Screenshots and LEARN.md
 ```
 
 ## Quick start (no database needed)
