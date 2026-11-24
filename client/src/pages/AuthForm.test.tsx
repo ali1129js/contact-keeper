@@ -43,4 +43,42 @@ describe("AuthForm", () => {
     await userEvent.click(screen.getByRole("button", { name: "Log in" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("Invalid credentials");
   });
+
+  it("toggles password visibility on login without showing it by default", async () => {
+    const user = userEvent.setup();
+    renderForm("login");
+    const field = screen.getByLabelText("Password");
+    expect(field).toHaveAttribute("type", "password");
+    await user.type(field, "secret-password");
+    expect(field).toHaveAttribute("type", "password");
+
+    await user.click(screen.getByRole("button", { name: "Show password" }));
+    expect(field).toHaveAttribute("type", "text");
+    expect(field).toHaveValue("secret-password");
+    expect(screen.getByRole("button", { name: "Hide password" })).toHaveAttribute("aria-pressed", "true");
+
+    await user.click(screen.getByRole("button", { name: "Hide password" }));
+    expect(field).toHaveAttribute("type", "password");
+    expect(field).toHaveValue("secret-password");
+  });
+
+  it("toggles password and confirm-password visibility on register", async () => {
+    const user = userEvent.setup();
+    renderForm("register");
+    const password = screen.getByLabelText("Password");
+    const confirm = screen.getByLabelText("Confirm password");
+    expect(password).toHaveAttribute("type", "password");
+    expect(confirm).toHaveAttribute("type", "password");
+    await user.type(password, "password-123");
+    await user.type(confirm, "password-123");
+
+    await user.click(screen.getByRole("button", { name: "Show password" }));
+    expect(password).toHaveAttribute("type", "text");
+    expect(confirm).toHaveAttribute("type", "password");
+
+    await user.click(screen.getByRole("button", { name: "Show confirm password" }));
+    expect(confirm).toHaveAttribute("type", "text");
+    await user.click(screen.getByRole("button", { name: "Hide confirm password" }));
+    expect(confirm).toHaveAttribute("type", "password");
+  });
 });

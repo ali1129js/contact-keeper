@@ -2,6 +2,49 @@ import { useState, type FormEvent } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+function PasswordField({
+  id,
+  label,
+  value,
+  onChange,
+  autoComplete,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  autoComplete: string;
+}) {
+  const [visible, setVisible] = useState(false);
+  const toggleLabel = visible ? `Hide ${label.toLowerCase()}` : `Show ${label.toLowerCase()}`;
+
+  return (
+    <div className="password-field">
+      <label htmlFor={id}>{label}</label>
+      <div className="password-row">
+        <input
+          id={id}
+          className="input"
+          type={visible ? "text" : "password"}
+          value={value}
+          autoComplete={autoComplete}
+          onChange={(e) => onChange(e.target.value)}
+        />
+        <button
+          type="button"
+          className="btn btn-ghost"
+          aria-label={toggleLabel}
+          aria-pressed={visible}
+          aria-controls={id}
+          onClick={() => setVisible((v) => !v)}
+        >
+          {visible ? "Hide" : "Show"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const { user, login, register } = useAuth();
   const [name, setName] = useState("");
@@ -44,15 +87,21 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
         Email
         <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
       </label>
-      <label>
-        Password
-        <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </label>
+      <PasswordField
+        id="password"
+        label="Password"
+        value={password}
+        autoComplete={isRegister ? "new-password" : "current-password"}
+        onChange={setPassword}
+      />
       {isRegister && (
-        <label>
-          Confirm password
-          <input className="input" type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
-        </label>
+        <PasswordField
+          id="confirm-password"
+          label="Confirm password"
+          value={confirm}
+          autoComplete="new-password"
+          onChange={setConfirm}
+        />
       )}
       <button className="btn btn-primary" type="submit">
         {isRegister ? "Register" : "Log in"}
