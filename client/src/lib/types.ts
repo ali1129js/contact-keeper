@@ -15,3 +15,10 @@ export interface User {
   name: string;
   email: string;
 }
+
+export interface ContactPage {
+  contacts: Contact[];
+  total: number;
+  limit: number;
+  offset: number;
+}

@@ -74,7 +74,7 @@ All contact routes need an `Authorization: Bearer <token>` header and only ever 
 | POST | `/api/auth/register` | `{ name, email, password }` |
 | POST | `/api/auth/login` | `{ email, password }` |
 | GET | `/api/auth/me` | |
-| GET | `/api/contacts` | |
+| GET | `/api/contacts` | Query: `limit` (default 20, max 100) and `offset` (default 0). Response: `{ contacts, total, limit, offset }` |
 | POST | `/api/contacts` | `{ name, email?, phone?, type? }` |
 | PUT | `/api/contacts/:id` | any contact fields |
 | DELETE | `/api/contacts/:id` | |

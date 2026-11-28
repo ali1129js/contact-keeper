@@ -19,3 +19,11 @@ See `server/src/schemas.ts`, `server/src/env.ts` and `payloadSchema` in `server/
 A full MongoDB install is not required to try the app. `npm run demo` starts `MongoMemoryServer`, seeds the fictional user `demo@example.com` and a handful of made-up contacts, then serves the API and the Vite client. The JWT secret is random for that run, and the in-memory database disappears when you stop the process. That is why the README login works without a `.env` file.
 
 See `server/src/scripts/demo.ts` and `server/src/scripts/seed.ts`.
+
+## Pagination on the contact list
+
+`GET /api/contacts` used to return every contact in one array. A real account can outgrow that, so the route now takes `limit` and `offset` and answers with `{ contacts, total, limit, offset }`. Invalid query values are a 400, not a surprise page of everything. The sort is still newest first, so "page two" is the next slice of the same list, not a new query.
+
+The client loads five contacts at a time, shows a count (`3 of 6 contacts`), and offers **Load more** while `contacts.length < total`. Adding or deleting a contact updates the loaded list and the total without refetching the first page. The demo seed is still six fictional contacts; five plus one remaining is enough to see the second page.
+
+See `parsePage` in `server/src/routes/contacts.ts` and `Home` in `client/src/pages/Home.tsx`.

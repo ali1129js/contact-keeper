@@ -1,4 +1,4 @@
-import type { Contact, ContactInput, User } from "./types";
+import type { Contact, ContactInput, ContactPage, User } from "./types";
 
 const BASE = import.meta.env.VITE_API_URL ?? "";
 const TOKEN_KEY = "ck_token";
@@ -47,7 +47,13 @@ export const api = {
   login: (data: { email: string; password: string }) =>
     request<{ token: string }>("/auth/login", { method: "POST", body: JSON.stringify(data) }),
   me: () => request<User>("/auth/me"),
-  listContacts: () => request<Contact[]>("/contacts"),
+  listContacts: (page?: { limit?: number; offset?: number }) => {
+    const q = new URLSearchParams();
+    if (page?.limit != null) q.set("limit", String(page.limit));
+    if (page?.offset != null) q.set("offset", String(page.offset));
+    const suffix = q.toString() ? `?${q.toString()}` : "";
+    return request<ContactPage>(`/contacts${suffix}`);
+  },
   createContact: (c: ContactInput) => request<Contact>("/contacts", { method: "POST", body: JSON.stringify(c) }),
   updateContact: (id: string, c: Partial<ContactInput>) =>
     request<Contact>(`/contacts/${id}`, { method: "PUT", body: JSON.stringify(c) }),

@@ -32,12 +32,13 @@ describe("demo reset cron", () => {
     const token = await login(DEMO_USER.email, DEMO_USER.password);
     const auth = { Authorization: `Bearer ${token}` };
     const list = await request(app).get("/api/contacts").set(auth);
-    await request(app).delete(`/api/contacts/${list.body[0]._id}`).set(auth);
+    await request(app).delete(`/api/contacts/${list.body.contacts[0]._id}`).set(auth);
     await request(app).post("/api/contacts").set(auth).send({ name: "Vandal" });
 
     await reset();
     const after = await request(app).get("/api/contacts").set({ Authorization: `Bearer ${await login(DEMO_USER.email, DEMO_USER.password)}` });
-    expect(after.body.map((c: { name: string }) => c.name).sort()).toEqual(DEMO_CONTACTS.map((c) => c.name).sort());
+    expect(after.body.contacts.map((c: { name: string }) => c.name).sort()).toEqual(DEMO_CONTACTS.map((c) => c.name).sort());
+    expect(after.body.total).toBe(DEMO_CONTACTS.length);
     expect(await Contact.countDocuments()).toBe(DEMO_CONTACTS.length);
   });
 
@@ -48,7 +49,8 @@ describe("demo reset cron", () => {
     await reset();
     await reset();
     const mine = await request(app).get("/api/contacts").set(auth);
-    expect(mine.body.map((c: { name: string }) => c.name)).toEqual(["Keep Me"]);
+    expect(mine.body.contacts.map((c: { name: string }) => c.name)).toEqual(["Keep Me"]);
+    expect(mine.body.total).toBe(1);
     expect(await login("other@example.com", "password-123")).toBeTypeOf("string");
   });
 });
