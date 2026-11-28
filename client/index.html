@@ -4,6 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📇</text></svg>" />
+    <script>
+      // Mirrors resolveTheme / useMotion in src/theme/theme.ts (src/theme/noflash.test.ts checks it).
+      try {
+        var t = localStorage.getItem("contact-keeper.theme");
+        if (t !== "khaki" && t !== "graphite" && t !== "midnight")
+          t = matchMedia("(prefers-color-scheme: dark)").matches ? "graphite" : "khaki";
+        document.documentElement.dataset.theme = t;
+        var m = localStorage.getItem("contact-keeper.motion") === "animated";
+        document.documentElement.dataset.motion =
+          m && !matchMedia("(prefers-reduced-motion: reduce)").matches ? "animated" : "static";
+      } catch (e) {}
+    </script>
     <title>Contact Keeper</title>
   </head>
   <body>

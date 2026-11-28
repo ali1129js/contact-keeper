@@ -10,6 +10,8 @@ See [docs/LEARN.md](docs/LEARN.md) for how JWT auth, Zod validation and `npm run
 
 ![Contact Keeper screenshot](docs/screenshot.png)
 
+**Themes:** Khaki (light), Graphite and Midnight (dark), chosen in the navbar and stored in this browser; without a choice the system colour scheme decides (Khaki or Graphite). Motion is off by default and `prefers-reduced-motion` always keeps it off. Login page in each theme: [Khaki](docs/theme-khaki.png), [Graphite](docs/theme-graphite.png), [Midnight](docs/theme-midnight.png). The main screenshot above predates the themes (the contact list needs a running backend, so it was not retaken).
+
 ## Stack
 
 | Layer | Tech |

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export function Navbar() {
   const { user, logout } = useAuth();
@@ -9,6 +10,7 @@ export function Navbar() {
         📇 Contact Keeper
       </Link>
       <div className="nav-links">
+        <ThemeSwitcher />
         {user ? (
           <>
             <span className="muted">Hi, {user.name}</span>
